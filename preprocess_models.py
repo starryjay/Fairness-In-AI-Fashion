@@ -144,23 +144,140 @@ def gender_distribution_per_us_agency(agency_df):
     plt.savefig("images/gender_distribution_per_agency.png")
 
 
+def import_skintone_data():
+    skintones_first75 = pd.read_csv('data/skintones_first75.csv')
+    skintones_last75 = pd.read_csv('data/skintones_last75.csv')
+    skintones_first75.rename(columns={'model name': 'name'}, inplace=True)
+    skintones = pd.concat([skintones_first75, skintones_last75], axis=0)
+    skintones = skintones.drop_duplicates(subset=['name'], keep='first')
+    if 'Unnamed: 0' in skintones.columns:
+        skintones = skintones.drop(columns=['Unnamed: 0'])
+    # split RGB values into separate columns
+    skintones[['R', 'G', 'B']] = skintones['RGB_value'].str.split(',', expand=True).astype(int)
+    # drop the original RGB_value column
+    skintones = skintones.drop(columns=['RGB_value'])
+    skintones = skintones.reset_index(drop=True)
+    skintones.to_csv('data/skintones.csv', index = False)
+    return skintones
 
 
+def plot_skintone_distribution():
+    skintones_df = load_data('data/skintones.csv')
+    skintones_df['R'] = skintones_df['R'].astype(int)
+    skintones_df['G'] = skintones_df['G'].astype(int)
+    skintones_df['B'] = skintones_df['B'].astype(int)
 
+    # Create a bar plot of the skintone distribution
+    plt.figure(figsize=(10, 8))
+    skintone_counts = skintones_df['skin_tone'].value_counts().sort_index()
+    print(skintone_counts)
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] for i in skintone_counts.index])
+    plt.title('Skintone Distribution')
+    plt.xlabel('Skin Tone on Monk Skin Tone Scale')
+    plt.ylabel('Count')
+    plt.xticks(list(range(1, 11)), rotation=90)
+    plt.savefig('images/skintone_distribution_barchart.png')
+    plt.show()
 
+def plot_skintone_vs_achievements():
+    skintones_df = load_data('data/skintones.csv')
+    moty_df = load_data('data/moty.csv')
+    combined_data = pd.merge(skintones_df, moty_df, on='name', how='inner')
+    print(combined_data.head())
+    combined_data.rename(columns={'skin_tone_x': 'skin_tone', 'skin_tone_y': 'skin_tone_moty'}, inplace=True)
+    combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
+
+    # plot mean number of achievements per skintone
+    plt.figure(figsize=(10, 8))
+    combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
+    mean_achievements = combined_data.groupby('skin_tone')['num_achievements'].mean()
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    plt.bar(x=list(mean_achievements.index), height=list(mean_achievements.values), color=[skin_tone_colormap[i] for i in mean_achievements.index])
+    plt.title('Mean Number of Achievements per Skintone')
+    plt.xlabel('Skin Tone on Monk Skin Tone Scale')
+    plt.ylabel('Mean Number of Achievements')
+    plt.xticks(list(range(1, 11)), rotation=90)
+    plt.savefig('images/skintone_vs_achievements.png')
+    plt.show()
 
     
-    
+def moty_winners_by_skintone(moty_df_model_of_the_year, skintones_df):
+    plt.figure(figsize=(10, 8))
+    combined_data = pd.merge(moty_df_model_of_the_year, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
+    combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
+    combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
+    skintone_counts = combined_data['skin_tone'].value_counts().sort_index()
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    # keep only award == 'MOTY'
+    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] for i in skintone_counts.index])
+    plt.title('MOTY Winners by Skintone')
+    plt.xlabel('Skin Tone on Monk Skin Tone Scale')
+    plt.ylabel('Count')
+    plt.xticks(list(range(1, 11)), rotation=90)
+    plt.savefig('images/moty_winners_by_skintone.png')
+    plt.show()
 
 
+def skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female):
+    models = pd.concat([moty_df, top_50_female, top_50_male], axis=0)
+    models = models.loc[:, ['name', 'gender']].drop_duplicates().reset_index(drop = True)
+    print(models.head())
+    combined_data = pd.merge(skintones_df, models, on='name', how='inner')
+    combined_data = combined_data.drop(columns=['R', 'G', 'B'])
+    combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
+    grouped_data = combined_data.groupby('gender')['skin_tone'].value_counts().unstack().fillna(0)
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    fig, ax = plt.subplots(1, 5, figsize=(100, 5), sharey=True, )
+    # each plot is a gender category, with the number of models in each skintone category
 
-   
-
+    ax[0].bar(x=grouped_data.columns, height=grouped_data.iloc[0], color=[skin_tone_colormap[i] for i in grouped_data.columns])
+    ax[0].set_title('Cisgender Female Models by Skintone')
+    ax[0].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[0].set_ylabel('Count')
+    ax[0].set_xticks(list(range(1, 11)))
+    ax[0].set_xticklabels(list(range(1, 11)), rotation=90)
+    ax[1].bar(x=grouped_data.columns, height=grouped_data.iloc[1], color=[skin_tone_colormap[i] for i in grouped_data.columns])
+    ax[1].set_title('Cisgender Male Models by Skintone')
+    ax[1].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[1].set_ylabel('Count')
+    ax[1].set_xticks(list(range(1, 11)))
+    ax[1].set_xticklabels(list(range(1, 11)), rotation=90)
+    ax[2].bar(x=grouped_data.columns, height=grouped_data.iloc[2], color=[skin_tone_colormap[i] for i in grouped_data.columns])
+    ax[2].set_title('Non-Binary Models by Skintone')
+    ax[2].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[2].set_ylabel('Count')
+    ax[2].set_xticks(list(range(1, 11)))
+    ax[2].set_xticklabels(list(range(1, 11)), rotation=90)
+    ax[3].bar(x=grouped_data.columns, height=grouped_data.iloc[3], color=[skin_tone_colormap[i] for i in grouped_data.columns])
+    ax[3].set_title('Transgender Female Models by Skintone')
+    ax[3].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[3].set_ylabel('Count')
+    ax[3].set_xticks(list(range(1, 11)))
+    ax[3].set_xticklabels(list(range(1, 11)), rotation=90)
+    ax[4].bar(x=grouped_data.columns, height=grouped_data.iloc[4], color=[skin_tone_colormap[i] for i in grouped_data.columns])
+    ax[4].set_title('Transgender Male Models by Skintone')
+    ax[4].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[4].set_ylabel('Count')
+    ax[4].set_xticks(list(range(1, 11)))
+    ax[4].set_xticklabels(list(range(1, 11)), rotation=90)
+    #plt.subplots_adjust(wspace=0.5)
+    plt.savefig('images/skintone_vs_gender.png')
+    plt.tight_layout(h_pad=100.0)
+    plt.show()
 
 
 
 def main(): 
     
+    skintones_df = import_skintone_data()
+    #plot_skintone_distribution()
+    #plot_skintone_vs_achievements()
+
     moty_df = load_data('data/moty.csv')
     print(moty_df.head())
     print("\n")
@@ -203,8 +320,9 @@ def main():
     #break out star
     moty_bs_df = moty_df[moty_df['award'] == 'BS']
     
+    #moty_winners_by_skintone(moty_df_model_of_the_year, skintones_df)
+    skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female)
     
-    print("model of the year breakout star", moty_bs_df.head())
     # print("Distribution of type of awards based on hair and eye color")
 
 
@@ -250,7 +368,7 @@ def main():
 
     #TODO: top 50 - female
 
-    #TODO: top 50 - male
+    #TODO: top 50 - male'''
 
     
 
