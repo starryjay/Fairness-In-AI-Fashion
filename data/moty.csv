@@ -1,9 +1,9 @@
-name,skin_tone,award,num_achievements,nationality ,gender,number_of_runway_shows,current_agency_affiliation,year,choice,hair_color,eye_color
+name,skin_tone,award,num_achievements,nationality,gender,number_of_runway_shows,current_agency_affiliation,year,choice,hair_color,eye_color
 Walid Fiher,,BS,3,Morocco/Italy,M,63,Soul Artist Management,2023,Industry,black,brown
 Valentin Caron,,BS,3,France,M,23,Success Models (Paris),2024,Industry,blonde,blue
 Valentin Caron,,BS,3,France,M,23,Success Models (Paris),2024,Readers,blonde,blue
 Trevor Signorino,,BS,3,United States,M,17,IMG New York,2016,Readers,brown,hazel
-Sora Choi ,,MOTY,4,South Korea ,F,537,The Lions,2020,Readers,black,brown
+Sora Choi,,MOTY,4,South Korea,F,537,The Lions,2020,Readers,black,brown
 Sofia Steinberg,,MOTY,3,Russia,NB,219,The Lions,2021,Readers,black,green
 Sean O'Pry,,MOTY,4,United States,M,50,VNY Models,2014,Readers,brown,blue
 Sang Woo Kim,,BS,5,United Kingdom/South Korea,M,78,LUMIEN Creative,2014,Readers,black,brown
@@ -12,17 +12,17 @@ Quannah Chasinghorse,,BS,3,United States,F,38,Society Management,2021,Industry,b
 Quannah Chasinghorse,,BS,3,United States,F,38,Society Management,2021,Readers,brown,brown
 Presley Gerber,,BS,3,United States,M,19,DNA Models,2017,Readers,blonde,hazel
 Paul Hameline,,MOTY,4,France,M,95,The Lions,2017,Industry,brown,blue
-Paloma Elsesser,,MOTY,5,United States/United Kingdom,F,115,IMG New York ,2020,Industry,brown,brown
+Paloma Elsesser,,MOTY,5,United States/United Kingdom,F,115,IMG New York,2020,Industry,brown,brown
 Ottawa Kwami,,BS,3,Ghana,M,175,Premium Models (Paris),2020,Industry,black,brown
-Naomi Campbell ,,MOTY,4,United Kingdom/Jamaica,F,202,Supreme Management ,2019,Readers,black,hazel
+Naomi Campbell,,MOTY,4,United Kingdom/Jamaica,F,202,Supreme Management,2019,Readers,black,hazel
 Mona Tougaard,,BS,4,Denmark,F,275,Society Management,2019,Industry,brown,brown
 Mila van Eeten,,BS,3,Netherlands,F,152,DNA Models,2022,Industry,black,blue
 Mika Schneider,,BS,3,Japan/France,F,293,Society Management,2020,Readers,black,brown
 Meghan Roche,,BS,3,United States,F,95,DNA Models,2019,Readers,brown,blue
 Maty Drazek,,BS,3,Czech Republic,NB,13,Elite New York City,2022,Industry,blonde,blue
 Mathilda Gvarliani,,BS,3,Georgia,F,70,NEXT New York,2022,Readers,brown,brown
-Mathieu Simoneau,,BS,3,United States/Canada,M,134,VNY Models,2022,Readers,brown ,brown 
-Mathieu Simoneau,,MOTY,3,United States/Canada,M,134,VNY Models,2023,Readers,brown ,brown 
+Mathieu Simoneau,,BS,3,United States/Canada,M,134,VNY Models,2022,Readers,brown,brown 
+Mathieu Simoneau,,MOTY,3,United States/Canada,M,134,VNY Models,2023,Readers,brown,brown 
 Lucky Blue Smith,,MOTY,6,United States,M,61,IMG New York,2015,Industry,blonde,blue
 Lucky Blue Smith,,MOTY,6,United States,M,61,IMG New York,2015,Readers,blonde,blue
 Lineisy Montero,,BS,4,Dominican Republic,F,518,NEXT New York,2015,Industry,black,brown
@@ -31,7 +31,7 @@ Leon Dame,,BS,4,Germany,M,264,DNA Models,2019,Industry,blonde,brown
 Leon Dame,,MOTY,4,Germany,M,264,DNA Models,2024,Industry,blonde,brown
 Kristen McMenamy,,MOTY,3,United States,F,73,The Lions,2021,Industry,white,blue
 Kit Butler,,MOTY,6,United Kingdom,M,178,Soul Artist Management,2018,Readers,brown,hazel
-Kit Butler,,MOTY,6,United Kingdom,M,178,Soul Artist Management,2023,Industry,brown ,hazel 
+Kit Butler,,MOTY,6,United Kingdom,M,178,Soul Artist Management,2023,Industry,brown,hazel 
 Kendall Jenner,,BS,5,United States,F,137,Society Management,2014,Readers,brown,brown
 Kendall Jenner,,MOTY,5,United States,F,137,Society Management,2016,Readers,brown,brown
 Kaia Gerber,,BS,5,United States,F,174,DNA Models,2017,Industry,brown,brown
@@ -40,9 +40,9 @@ Kai Isaiah Jamal,,BS,5,United Kingdom,TM,40,Society Management,2021,Industry,bro
 Jordan Barrett,,BS,6,Australia,M,42,IMG New York,2015,Industry,blonde,blue/green
 Jordan Barrett,,BS,6,Australia,M,42,IMG New York,2015,Readers,blonde,blue/green
 Jordan Barrett,,MOTY,6,Australia,M,42,IMG New York,2016,Industry,blonde,blue/green
-Jill Kortleve,,BS,5,Netherlands,F,109,IMG New York ,2020,Industry,black,brown
-Hedi Ben Tekaya,,BS,3,Tunisia/France,M,38,IMG New York,2023,Readers,brown ,brown
-Hedi Ben Tekaya,,MOTY,3,Tunisia/France,M,38,IMG New York,2024,Readers,brown ,brown
+Jill Kortleve,,BS,5,Netherlands,F,109,IMG New York,2020,Industry,black,brown
+Hedi Ben Tekaya,,BS,3,Tunisia/France,M,38,IMG New York,2023,Readers,brown,brown
+Hedi Ben Tekaya,,MOTY,3,Tunisia/France,M,38,IMG New York,2024,Readers,brown,brown
 Haatepah,,BS,1,United States,M,0,Storm Management,2021,Readers,nan,nan
 Grace Elizabeth,,BS,5,United States,F,249,Society Management,2016,Readers,blonde,green
 Gigi Hadid,,MOTY,5,United States/Palestine,F,231,IMG New York,2015,Readers,blonde,blue
@@ -52,8 +52,8 @@ Francisco Lachowski,,MOTY,4,Brazil,M,54,ONE Management,2016,Readers,brown,brown
 Fran Summers,,BS,3,United Kingdom,F,265,Society Management,2018,Industry,brown,blue
 Fran Summers,,BS,3,United Kingdom,F,265,Society Management,2018,Readers,brown,blue
 Filip Hrivnak,,BS,4,Slovakia,M,52,Soul Artist Management,2014,Industry,brown,blue/green
-Fernando Lindez,,BS,3,Spain ,M,78,Wilhelmina New York ,2020,Readers,brown,hazel
-Fernando Lindez,,MOTY,3,Spain ,M,78,Wilhelmina New York ,2021,Readers,brown,hazel
+Fernando Lindez,,BS,3,Spain,M,78,Wilhelmina New York,2020,Readers,brown,hazel
+Fernando Lindez,,MOTY,3,Spain,M,78,Wilhelmina New York,2021,Readers,brown,hazel
 Elliot Meeten,,BS,2,United Kingdom,M,7,Society Management,2018,Readers,brown,brown
 Edie Campbell,,MOTY,4,United Kingdom,F,217,DNA Models,2014,Industry,blonde,blue
 Connor Newall,,BS,3,United Kingdom,M,10,New Madison (Paris),2016,Industry,blonde,blue
@@ -66,24 +66,24 @@ Bella Hadid,,MOTY,5,United States/Palestine,F,252,IMG New York,2016,Industry,bro
 Bella Hadid,,MOTY,5,United States/Palestine,F,252,IMG New York,2017,Readers,brown,blue
 Bella Hadid,,MOTY,5,United States/Palestine,F,252,IMG New York,2022,Industry,brown,blue
 Bella Hadid,,MOTY,5,United States/Palestine,F,252,IMG New York,2022,Readers,brown,blue
-Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2023,Industry,brown ,brown 
-Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2023,Readers,brown ,brown 
-Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2024,Readers,brown ,brown 
+Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2023,Industry,brown,brown 
+Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2023,Readers,brown,brown 
+Anok Yai,,MOTY,4,United States/South Sudan,F,286,No Smoking,2024,Readers,brown,brown 
 Anna Ewers,,BS,5,Germany,F,292,Elite New York City,2014,Industry,blonde,brown
 Anna Ewers,,MOTY,5,Germany,F,292,Elite New York City,2015,Industry,blonde,brown
 Angelina Kendall,,BS,3,Australia/Brazil,F,139,The Industry,2023,Industry,brown,green
-Alton Mason ,,MOTY,5,United States,M,175,IMG New York ,2019,Industry,brown,brown
-Alton Mason ,,MOTY,5,United States,M,175,IMG New York ,2019,Readers,brown,brown
-Alton Mason ,,MOTY,5,United States,M,175,IMG New York ,2021,Industry,brown,brown
-Alton Mason ,,MOTY,5,United States,M,175,IMG New York ,2022,Industry,brown,brown
-Alton Mason ,,MOTY,5,United States,M,175,IMG New York ,2022,Readers,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2019,Industry,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2019,Readers,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2021,Industry,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2022,Industry,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2022,Readers,brown,brown
 Alton Mason,,BS,5,United States,M,175,IMG New York,2017,Industry,brown,brown
-Alton Mason,,MOTY,5,United States,M,175,IMG New York ,2018,Industry,brown,brown
-Alton Mason,,MOTY,5,United States,M,175,IMG New York ,2020,Industry,brown,brown
-Alton Mason,,MOTY,5,United States,M,175,IMG New York ,2020,Readers,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2018,Industry,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2020,Industry,brown,brown
+Alton Mason,,MOTY,5,United States,M,175,IMG New York,2020,Readers,brown,brown
 Alex Consani,,BS,3,United States,TF,114,IMG New York,2023,Readers,blonde,blue
 Alex Consani,,MOTY,3,United States,TF,114,IMG New York,2024,Industry,blonde,blue
 Adwoa Aboah,,BS,4,United Kingdom,F,108,DNA Models,2016,Industry,brown,brown
 Adwoa Aboah,,MOTY,4,United Kingdom,F,108,DNA Models,2017,Industry,brown,brown
 Adut Akech,,MOTY,5,South Sudan,F,336,The Lions,2018,Industry,brown,brown
-Adut Akech,,MOTY,5,South Sudan ,F,336,The Lions,2019,Industry,brown,brown
+Adut Akech,,MOTY,5,South Sudan,F,336,The Lions,2019,Industry,brown,brown
