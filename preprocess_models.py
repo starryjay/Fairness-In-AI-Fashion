@@ -9,7 +9,7 @@ def load_data(data_file_path):
     return data
 
 def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
-    '''plot count of hair and eye color based on choice of award'''
+    '''plot count of hair and eye color based on choice of award - YES IN FINAL, CHANGE COLORS + ADD TITLE'''
     moty_df = moty_df.loc[moty_df['award'] == award]
     print('len moty df:', len(moty_df))
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
@@ -58,7 +58,7 @@ def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
 
 
 def eda_moty_hair_eye_color_num_achievements_distribution(moty_df, award):
-    '''plot median num of achievements based on hair and eye color'''
+    '''plot median num of achievements based on hair and eye color - YES IN FINAL'''
     moty_df = moty_df.loc[moty_df['award'] == award]
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
 
@@ -156,7 +156,7 @@ def eda_gender_distribution_over_years(moty_df):
 
 
 def gender_distribution_per_us_agency(agency_df):
-    '''gender distribution per agency'''
+    '''gender distribution per agency - INCLUDE '''
 
     gender_cols = ["female","male", "non_binary"]
     for i in gender_cols: 
@@ -175,6 +175,9 @@ def gender_distribution_per_us_agency(agency_df):
 
     plt.title("Gender distribution per agency")
     plt.xlabel("Agency")
+    plt.xticks(rotation = 45, ha= 'right')
+    plt.margins(x = 0.1)
+    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.3)
     plt.ylabel("Count")
     plt.legend(title = "Gender")
 
@@ -385,6 +388,7 @@ def skintone_vs_runway(skintones_df, moty_df):
     plt.show()
 
 def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
+    '''KEEP IN FINAL'''
     #mean skintone of moty/bs over the years
     moty_df['year'] = pd.to_datetime(moty_df['year'], format='%Y')
     combined_data = pd.merge(moty_df, skintone_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
@@ -394,16 +398,16 @@ def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
     mean_skintone_by_year = combined_data.groupby('year')['skin_tone'].mean()
     plt.figure(figsize=(10, 8))
     plt.plot(mean_skintone_by_year.index, mean_skintone_by_year.values)
-    plt.title('Mean Skintone of MOTY and BS Winners Over Time')
+    plt.title('Mean Skintone of Model of the Year and Breakout Star Winners in the last 10 years')
     plt.xlabel('Year')
     plt.ylabel('Mean Skintone on Monk Skin Tone Scale')
     plt.savefig('images/mean_skintone_of_moty_bs_over_time.png')
     plt.show()
 
 
-# skintone distribution of moty/bs over the years (mean maybe?)
-# number of campaigns, number of runway shows, and number of magazine covers as skintone increases on monk scale
-# eye color and hair color by skintone
+
+# number of campaigns, number of runway shows, and number of magazine covers as skintone increases on monk scale - (top 50, moty datasets)
+
 
 def main(): 
     
