@@ -11,7 +11,6 @@ def load_data(data_file_path):
 def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
     '''plot count of hair and eye color based on choice of award - YES IN FINAL, CHANGE COLORS + ADD TITLE'''
     moty_df = moty_df.loc[moty_df['award'] == award]
-    print('len moty df:', len(moty_df))
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
     
     # bar_width = 0.15
@@ -54,8 +53,6 @@ def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
         plt.suptitle('Breakout Star - Distribution of type of awards based on hair and eye color')
         plt.tight_layout()
         plt.savefig('images/moty_bs_hair_eye_color_choice_distribution.png')
-
-
 
 def eda_moty_hair_eye_color_num_achievements_distribution(moty_df, award):
     '''plot median num of achievements based on hair and eye color - YES IN FINAL'''
@@ -149,8 +146,6 @@ def eda_gender_distribution_over_years(moty_df):
     plt.xlabel("Year")
     plt.ylabel("Count")
     plt.legend(title = "gender")
-
-   
     plt.savefig("images/award_won_by_gender_over_years_matplotlib.png")
 
 
@@ -404,9 +399,87 @@ def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
     plt.savefig('images/mean_skintone_of_moty_bs_over_time.png')
     plt.show()
 
+# number of campaigns and number of magazine covers as skintone increases on monk scale - (top 50, moty datasets)
+
+def campaigns_vs_skintone(top_50_female, top_50_male, skintones_df):
+    # combine top 50
+    top_50 = pd.concat([top_50_female, top_50_male], axis=0).rename(columns={'current_agency': 'agency_name'})
+    # drop all models with agencies not in USA
+    Agency = pd.read_csv('data/Agency.csv')
+    top_50 = pd.merge(left=top_50, right=Agency, on='agency_name', how='outer')
+    top_50 = top_50.loc[top_50['agency_country'] == 'USA']
+    top_50 = top_50.loc[:, ['name', 'number_of_campaigns_in_last_three_years', 'gender']].drop_duplicates().reset_index(drop = True)
+    combined_data = pd.merge(skintones_df, top_50, on='name', how='inner').rename(columns={'skin_tone_x': 'skin_tone', 'skin_tone_y': 'skin_tone_top_50'})
+    combined_data = combined_data.drop(columns=['R', 'G', 'B'])
+    combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
+    # boxplot of number of campaigns vs skintone and gender
+    fig, ax = plt.subplots(1, 2, figsize=(20, 10), sharey=True)
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96',
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    sns.boxplot(ax=ax[0], data=pd.concat([combined_data.loc[combined_data['gender'] == 'F'], 
+                                          combined_data.loc[combined_data['gender'] == 'TF'], 
+                                          combined_data.loc[combined_data['gender'] == 'NB']], axis=0), 
+                                          x='skin_tone', y='number_of_campaigns_in_last_three_years', hue='skin_tone',
+                                          palette=skin_tone_colormap, saturation=1, linecolor='xkcd:burgundy', legend=False)
+    ax[0].set_title('Top 50 Female Models')
+    ax[0].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[0].set_ylabel('Number of Campaigns in Last Three Years')
+    sns.boxplot(ax=ax[1], data=pd.concat([combined_data.loc[combined_data['gender'] == 'M'], 
+                                          combined_data.loc[combined_data['gender'] == 'TM'], 
+                                          combined_data.loc[combined_data['gender'] == 'NB']], axis=0), 
+                                          x='skin_tone', y='number_of_campaigns_in_last_three_years', hue='skin_tone',
+                                          palette=skin_tone_colormap, saturation=1, linecolor='midnightblue', legend=False)
+    ax[1].set_title('Top 50 Male Models')
+    ax[1].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[1].set_ylabel('Number of Campaigns in Last Three Years')
+    plt.suptitle('Number of Campaigns vs Skintone for Top 50 Models')
+    plt.savefig('images/campaigns_vs_skintone.png')
+    plt.show()
 
 
-# number of campaigns, number of runway shows, and number of magazine covers as skintone increases on monk scale - (top 50, moty datasets)
+    # plt.figure(figsize=(10, 8))
+    # skin_tone_colormap = {'1': '#f6ede4', '2': '#f3e7db', '3': '#f7ead0', '4': '#eadaba', '5': '#d7bd96', 
+    #                       '6': '#a07e56', '7': '#825c43', '8': '#604134', '9': '#3a312a', '10': '#292420'}
+    # sns.boxplot(data=combined_data, x='skin_tone', y='number_of_campaigns_in_last_three_years', palette=skin_tone_colormap, saturation=1)
+    # plt.title('Number of Campaigns vs Skintone on Monk Skin Tone Scale for Top 50 Models')
+    # plt.xlabel('Skin Tone on Monk Skin Tone Scale')
+    # plt.ylabel('Number of Campaigns in Last Three Years')
+    
+
+def covers_vs_skintone(top_50_female, top_50_male, skintones_df):
+    # combine top 50
+    top_50 = pd.concat([top_50_female, top_50_male], axis=0).rename(columns={'current_agency': 'agency_name'})
+    # drop all models with agencies not in USA
+    Agency = pd.read_csv('data/Agency.csv')
+    top_50 = pd.merge(left=top_50, right=Agency, on='agency_name', how='outer')
+    top_50 = top_50.loc[top_50['agency_country'] == 'USA']
+    top_50 = top_50.loc[:, ['name', 'number_of_covers', 'gender']].drop_duplicates().reset_index(drop = True)
+    combined_data = pd.merge(skintones_df, top_50, on='name', how='inner').rename(columns={'skin_tone_x': 'skin_tone', 'skin_tone_y': 'skin_tone_top_50'})
+    combined_data = combined_data.drop(columns=['R', 'G', 'B'])
+    combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
+    # boxplot of number of campaigns vs skintone and gender
+    fig, ax = plt.subplots(1, 2, figsize=(20, 10), sharey=True)
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96',
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    sns.boxplot(ax=ax[0], data=pd.concat([combined_data.loc[combined_data['gender'] == 'F'], 
+                                          combined_data.loc[combined_data['gender'] == 'TF'], 
+                                          combined_data.loc[combined_data['gender'] == 'NB']], axis=0), 
+                                          x='skin_tone', y='number_of_covers', hue='skin_tone',
+                                          palette=skin_tone_colormap, saturation=1, linecolor='xkcd:burgundy', legend=False)
+    ax[0].set_title('Top 50 Female Models')
+    ax[0].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[0].set_ylabel('Number of Magazine Covers in Last Three Years')
+    sns.boxplot(ax=ax[1], data=pd.concat([combined_data.loc[combined_data['gender'] == 'M'], 
+                                          combined_data.loc[combined_data['gender'] == 'TM'], 
+                                          combined_data.loc[combined_data['gender'] == 'NB']], axis=0), 
+                                          x='skin_tone', y='number_of_covers', hue='skin_tone',
+                                          palette=skin_tone_colormap, saturation=1, linecolor='midnightblue', legend=False)
+    ax[1].set_title('Top 50 Male Models')
+    ax[1].set_xlabel('Skin Tone on Monk Skin Tone Scale')
+    ax[1].set_ylabel('Number of Magazine Covers in Last Three Years')
+    plt.suptitle('Number of Magazine Covers vs Skintone for Top 50 Models')
+    plt.savefig('images/covers_vs_skintone.png')
+    plt.show()
 
 
 def main(): 
@@ -439,11 +512,12 @@ def main():
     #break out star
     moty_bs_df = moty_df[moty_df['award'] == 'BS']
     
-    #moty_winners_by_skintone(moty_df_model_of_the_year, skintones_df)
     skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female)
     skintone_vs_moty_bs(skintones_df, moty_df)
     skintone_vs_runway(skintones_df, moty_df)
     mean_skintone_of_moty_bs_over_time(skintones_df, moty_df)
+    campaigns_vs_skintone(top_50_female, top_50_male, skintones_df)
+    covers_vs_skintone(top_50_female, top_50_male, skintones_df)
     
     # print("Distribution of type of awards based on hair and eye color")
 
