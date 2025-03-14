@@ -26,13 +26,17 @@ def import_skintone_data():
     return skintones
 
 
-def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m):
-   
-    combined_data = pd.merge(moty_df, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty', 'current agency_affiliation':'current_agency'})
-    combined_data_f = pd.merge(top_50_f, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_f', 'hair': 'hair_color', 'eyes': 'eye_color'})
-    combined_data_m = pd.merge(top_50_m, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_m', 'hair': 'hair_color', 'eyes': 'eye_color'})
-    combined_data = pd.concat([combined_data, combined_data_f, combined_data_m], axis=0)
-    combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty', 'skin_tone_top_50_f', 'skin_tone_top_50_m'])
+def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m, agency_df):
+    combined_data = pd.merge(moty_df, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty', 'current_agency_affiliation':'current_agency'})
+    print('moty:', combined_data.columns)
+    combined_data_f = pd.merge(top_50_f, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_f', 'hair ': 'hair_color', 'eyes ': 'eye_color'})
+    print('top_50_f:', combined_data_f.columns)
+    combined_data_m = pd.merge(top_50_m, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_m', 'hair ': 'hair_color', 'eyes ': 'eye_color'})
+    print('top_50_m:', combined_data_m.columns)
+    combined_data = pd.concat([combined_data, combined_data_f, combined_data_m], axis=0).drop(columns=['agency_city', 'agency_country'])
+    agency_df = agency_df.drop(columns=['female', 'male', 'non_binary', 'city', 'country']).rename(columns={'agency_name': 'current_agency'})
+    combined_data = pd.merge(combined_data, agency_df, on='current_agency', how='left')
+    combined_data = combined_data.drop(columns=['skin_tone_moty', 'skin_tone_top_50_f', 'skin_tone_top_50_m'])
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
 
     return combined_data
@@ -67,8 +71,7 @@ def main():
     #break out star
     moty_bs_df = moty_df[moty_df['award'] == 'BS']
 
-    combined_data = skintone_vs_runway(skintones_df, moty_df_model_of_the_year, top_50_female, top_50_male)
-    print(combined_data.head())
+    combined_data = skintone_vs_runway(skintones_df, moty_df_model_of_the_year, top_50_female, top_50_male, agency_df)
 
     
     
