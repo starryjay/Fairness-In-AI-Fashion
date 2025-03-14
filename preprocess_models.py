@@ -351,10 +351,16 @@ def skintone_vs_moty_bs(skintones_df, moty_df):
     plt.savefig('images/moty_bs_winners_by_skintone.png')
     plt.show()
     
-def skintone_vs_runway(skintones_df, moty_df):
+def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m):
     plt.figure(figsize=(10, 8))
     combined_data = pd.merge(moty_df, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
-    combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
+    combined_data_f = pd.merge(top_50_f, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_f'})
+    combined_data_m = pd.merge(top_50_m, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_m'})
+    combined_data = pd.concat([combined_data, combined_data_f, combined_data_m], axis=0)
+    combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty', 'skin_tone_top_50_f', 'skin_tone_top_50_m'])
+    combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
+    # plot histograms of number of runway shows by skintone
+    fig, axs = plt.subplots(3, 3, figsize=(20, 20), sharey=True, sharex=True)
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
     # plot histograms of number of runway shows by skintone
     fig, axs = plt.subplots(3, 3, figsize=(20, 20), sharey=True, sharex=True)
@@ -514,7 +520,7 @@ def main():
     
     skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female)
     skintone_vs_moty_bs(skintones_df, moty_df)
-    skintone_vs_runway(skintones_df, moty_df)
+    skintone_vs_runway(skintones_df, moty_df, top_50_female, top_50_male)
     mean_skintone_of_moty_bs_over_time(skintones_df, moty_df)
     campaigns_vs_skintone(top_50_female, top_50_male, skintones_df)
     covers_vs_skintone(top_50_female, top_50_male, skintones_df)
@@ -564,3 +570,5 @@ def main():
     #TODO: top 50 - male'''
 
 main()
+
+
