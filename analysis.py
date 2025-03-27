@@ -42,23 +42,108 @@ def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m, agency_df):
 
     return combined_data
 
-def analysis(combined_data):
+def analysis_runway_shows(combined_data):
     '''Ho: We hypothesize that gender and skin tone has no impact on the number of runways, magazine covers, and awards that models earn. 
 '''
-    combined_data = combined_data.dropna(subset=['gender', 'skin_tone'])
+    combined_data = combined_data.dropna(subset=['number_of_runway_shows', 'gender', 'skin_tone'])
+ 
     combined_data['gender'] = combined_data['gender'].astype('category')
     combined_data['skin_tone'] = combined_data['skin_tone'].astype('category')
 
     model_runway_shows = smf.ols('number_of_runway_shows ~ C(gender) + C(skin_tone) + C(gender):C(skin_tone)', data=combined_data).fit()
     anova_table_shows = sm.stats.anova_lm(model_runway_shows, typ=2) 
-    print("ANOVA Results using statsmodels:\n", anova_table_shows)
+    anova_table_shows = anova_table_shows.fillna(0)
+    print("ANOVA Results using statsmodels [Runway Shows]:\n", anova_table_shows)
     residuals = model_runway_shows.resid  # Extract residuals from ANOVA model
     plt.figure(figsize=(8, 5))
     sns.histplot(residuals, bins=20, kde=True)
-    plt.title("Residuals Distribution")
+    plt.title("Residuals Distribution Runway Shows")
     plt.xlabel("Residuals")
     plt.ylabel("Frequency")
     plt.show()
+    plt.savefig('residuals_runway_shows.png')
+
+def analysis_magazine_covers(combined_data):
+     '''Ho: We hypothesize that gender and skin tone has no impact on the number of magazine covers'''
+     combined_data = combined_data.dropna(subset=['number_of_covers', 'gender', 'skin_tone'])
+     combined_data['gender'] = combined_data['gender'].astype('category')
+     combined_data['skin_tone'] = combined_data['skin_tone'].astype('category')
+
+     model_magazine_covers = smf.ols('number_of_covers ~ C(gender) + C(skin_tone) + C(gender):C(skin_tone)', data=combined_data).fit()
+     anova_table_covers = sm.stats.anova_lm(model_magazine_covers, typ=2) 
+     anova_table_covers = anova_table_covers.fillna(0)
+     print("ANOVA Results using statsmodels [ Magazine Covers]:\n", anova_table_covers)
+     residuals = model_magazine_covers.resid  # Extract residuals from ANOVA model
+     plt.figure(figsize=(8, 5))
+     sns.histplot(residuals, bins=20, kde=True)
+     plt.title("Residuals Distribution Covers")
+     plt.xlabel("Residuals")
+     plt.ylabel("Frequency")
+     plt.show()
+     plt.savefig('residuals_magazine_covers.png')
+
+def anallysis_awards(combined_data):
+    '''Ho: We hypothesize that gender and skin tone has no impact on the number of awards'''
+    combined_data = combined_data.dropna(subset=['num_achievements', 'gender', 'skin_tone'])
+
+    combined_data['gender'] = combined_data['gender'].astype('category')
+
+    combined_data['skin_tone'] = combined_data['skin_tone'].astype('category')
+
+    model_awards = smf.ols('num_achievements ~ C(gender) + C(skin_tone) + C(gender):C(skin_tone)', data=combined_data).fit()
+    anova_table_award = sm.stats.anova_lm(model_awards, typ=2) 
+    anova_table_award = anova_table_award.fillna(0)
+    print("ANOVA Results using statsmodels [Awards]:\n", anova_table_award)
+    residuals = model_awards.resid  # Extract residuals from ANOVA model
+    plt.figure(figsize=(8, 5))
+    sns.histplot(residuals, bins=20, kde=True)
+    plt.title("Residuals Distribution Awards")
+    plt.xlabel("Residuals")
+    plt.ylabel("Frequency")
+    plt.savefig('residuals_awards.png')
+    plt.show()
+
+def plot_interaction(combined_data, outcome):
+    """
+    Plots the interaction between gender and skin tone for num_achievements
+    """
+
+    skin_tones = sorted(combined_data['skin_tone'].unique())
+    genders = combined_data['gender'].unique()
+
+
+    plt.figure(figsize=(10, 6))
+
+  
+    for gender in genders:
+        means = []
+        for tone in skin_tones:
+
+            mean_val = combined_data[
+                (combined_data['gender'] == gender) & 
+                (combined_data['skin_tone'] == tone)
+            ][outcome].mean()
+            means.append(mean_val)
+
+        plt.plot(skin_tones, means, marker='o', label=f'{gender}')
+
+
+    plt.title('Interaction between Gender and Skin Tone')
+    plt.xlabel('Skin Tone')
+    plt.ylabel('Number of Achievements')
+    plt.legend(title='Gender')
+    plt.grid(True)
+    plt.tight_layout()
+    plt.show()
+
+
+def regresseion_analysis(combined_data):
+    '''regression analysis while controlling for nationality'''
+    model = smf.ols('num_achievements ~ C(gender) * C(skin_tone) + nationality', data=combined_data).fit()
+    print(model.summary())
+
+    
+    
 
 
 
@@ -97,8 +182,14 @@ def main():
 
     combined_data = skintone_vs_runway(skintones_df, moty_df_model_of_the_year, top_50_female, top_50_male, agency_df)
     print(combined_data.head(4))
+    print(combined_data.columns)
 
-    analysis(combined_data)
+    analysis_runway_shows(combined_data)
+    analysis_magazine_covers(combined_data)
+    anallysis_awards(combined_data)
+    plot_interaction(combined_data, 'num_achievements')
+
+    regresseion_analysis(combined_data)
 
     
     
