@@ -138,9 +138,13 @@ def plot_interaction(combined_data, outcome):
 
 
 def regresseion_analysis(combined_data):
-    '''regression analysis while controlling for nationality'''
+    '''regression analysis while controlling for nationality, interaction effect of gender and skintone'''
+    print(combined_data[['gender', 'skin_tone', 'nationality']].value_counts())
+    print(combined_data[['number_of_runway_shows', 'number_of_campaigns_in_last_three_years', 'number_of_covers']].describe())
+
     model = smf.ols('num_achievements ~ C(gender) * C(skin_tone) + nationality', data=combined_data).fit()
     print(model.summary())
+   
 
     
     
