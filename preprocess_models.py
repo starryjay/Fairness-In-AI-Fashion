@@ -2,35 +2,18 @@ import numpy as np
 import pandas as pd 
 import matplotlib.pyplot as plt
 import seaborn as sns
-
+from matplotlib.collections import LineCollection
+from matplotlib.colors import ListedColormap
 
 def load_data(data_file_path):
     data = pd.read_csv(data_file_path)
     return data
 
 def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
-    '''plot count of hair and eye color based on choice of award - YES IN FINAL, CHANGE COLORS + ADD TITLE'''
+    '''plot count of hair and eye color by choice of award - YES IN FINAL, CHANGE COLORS + ADD TITLE'''
     moty_df = moty_df.loc[moty_df['award'] == award]
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
-    
-    # bar_width = 0.15
-    # x_indices = np.arange(len(hair_colors))  # Base x positions
 
-    # fig, ax = plt.subplots(figsize=(10, 6))
-
-    
-    # if 'Industry' in grouped.columns:
-    #     plot_bars(grouped['Industry'], -bar_width / 2, "Industry's Vote")
-    # if 'Reader' in grouped.columns:
-    #     plot_bars(grouped['Reader'], bar_width / 2, "Reader's Choice")
-
-    # ax.set_xticks(x_indices)
-    # ax.set_xticklabels(hair_colors)
-    # ax.set_ylabel('Number of Winners')
-    # ax.set_title('Model of the Year Winners by Hair and Eye Color')
-    # ax.legend()
-    # plt.show()
-    plt.figure(figsize=(10, 8))
     sns.catplot(
     data=moty_df,
     x="hair_color",
@@ -40,26 +23,23 @@ def eda_moty_hair_eye_color_choice_distribution(moty_df, award):
     height=8,
     aspect=0.8,
     palette=eye_color_map,
-    legend_out=True)
-    #plt.tight_layout()
-    #plt.show()
-   #title
+    legend_out=True,
+    )
 
     if award == 'MOTY':
-        plt.suptitle('Model of the Year - Distribution of type of awards based on hair and eye color')
+        plt.suptitle('Model of the Year - Award Distribution by Hair and Eye Color')
         plt.tight_layout()
         plt.savefig('images/moty_hair_eye_color_choice_distribution.png')
     else:
-        plt.suptitle('Breakout Star - Distribution of type of awards based on hair and eye color')
+        plt.suptitle('Breakout Star - Award Distribution by Hair and Eye Color')
         plt.tight_layout()
         plt.savefig('images/moty_bs_hair_eye_color_choice_distribution.png')
 
 def eda_moty_hair_eye_color_num_achievements_distribution(moty_df, award):
-    '''plot median num of achievements based on hair and eye color - YES IN FINAL'''
+    '''plot median num of achievements By hair and eye color - YES IN FINAL'''
     moty_df = moty_df.loc[moty_df['award'] == award]
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
 
-    plt.figure(figsize=(16, 8))
     sns.catplot(
      data=moty_df,
      x="hair_color",
@@ -73,21 +53,18 @@ def eda_moty_hair_eye_color_num_achievements_distribution(moty_df, award):
      legend_out=True)
    
     if award == 'MOTY':
-        plt.suptitle('Model of the Year - Distribution of median num of achievements based on hair and eye color')
-        #plt.tight_layout()
+        plt.suptitle('Model of the Year - Median Number of Achievements By Hair and Eye Color')
         plt.savefig('images/moty_hair_eye_color_achievements_distribution.png')
     else:
-        plt.suptitle('Breakout Star - Distribution of median num of achievements based on hair and eye color')
-        #plt.tight_layout()
+        plt.suptitle('Breakout Star - Median Number of Achievements By Hair and Eye Color')
         plt.savefig('images/moty_bs_hair_eye_color_achievements_distribution.png')
 
 
 def eda_moty_hair_eye_color_num_runway_shows_distribution(moty_df, award):
-    '''plot median num of runway shows based on hair and eye color'''
+    '''plot median num of runway shows By hair and eye color'''
     eye_color_map = {'brown': 'saddlebrown', 'blue': 'cornflowerblue', 'green': 'forestgreen', 'blue/green': 'darkcyan', 'hazel': 'olive'}
     moty_df = moty_df.loc[moty_df['award'] == award]
 
-    plt.figure(figsize=(16, 8))
     sns.catplot(
      data=moty_df,
      x="hair_color",
@@ -101,18 +78,17 @@ def eda_moty_hair_eye_color_num_runway_shows_distribution(moty_df, award):
      legend_out=True)
     
     if award == 'MOTY':
-        plt.suptitle('Model of the Year - Distribution of median num of runway shows based on hair and eye color')
+        plt.suptitle('Model of the Year - Median Number of Runway Shows By Hair and Eye Color')
         plt.savefig('images/moty_hair_eye_color_runway_shows_distribution.png')
 
     else:
-        plt.suptitle('Breakout Star - Distribution of median num of runway shows based on hair and eye color')
+        plt.suptitle('Breakout Star - Median Number of Runway Shows By Hair and Eye Color')
         plt.savefig('images/moty_bs_hair_eye_color_runway_shows_distribution.png')
 
 def eda_num_runway_shows_per_gender(moty_df, award):
     '''plot median num of runway shows per gender'''
     moty_df = moty_df.loc[moty_df['award'] == award]
 
-    plt.figure(figsize=(16, 8))
     sns.catplot(
      data=moty_df,
      x='gender',
@@ -125,11 +101,11 @@ def eda_num_runway_shows_per_gender(moty_df, award):
      estimator=np.median)
     
     if award == 'MOTY':
-        plt.suptitle('Model of the Year - Distribution of median num of runway shows')
+        plt.suptitle('Model of the Year - Median Number of Runway Shows By Gender')
         plt.savefig('images/moty_num_runway_shows_gender_distribution.png')
 
     else:
-        plt.suptitle('Breakout Star - Distribution of median num of runway shows')
+        plt.suptitle('Breakout Star - Median Number of Runway Shows By Gender')
         plt.savefig('images/moty_bs_number_runway_shows_gender_distribution.png')
 
 def eda_gender_distribution_over_years(moty_df):
@@ -150,35 +126,38 @@ def eda_gender_distribution_over_years(moty_df):
 
 
 
-def gender_distribution_per_us_agency(agency_df):
-    '''gender distribution per agency - INCLUDE '''
+import pandas as pd
+import matplotlib.pyplot as plt
 
-    gender_cols = ["female","male", "non_binary"]
+def gender_distribution_per_us_agency(agency_df):
+    '''Gender distribution per agency - Improved readability'''
+    
+    gender_cols = ["female", "male", "non_binary"]
     for i in gender_cols: 
         if i not in agency_df.columns:
             agency_df[i] = 0
 
     agency_df[gender_cols] = agency_df[gender_cols].apply(pd.to_numeric, errors='coerce')  
-
     agency_gender_count = agency_df.groupby("agency_name")[gender_cols].sum().reset_index()
-    agency_gender_count.set_index("agency_name", inplace = True)
+    agency_gender_count["total"] = agency_gender_count[gender_cols].sum(axis=1)
+    agency_gender_count = agency_gender_count.sort_values(by="total", ascending=False).drop(columns="total")
+    
+    agency_gender_count.set_index("agency_name", inplace=True)
+    colors = ["#ff73c5", "#73d5ff", "#78ff73"]  # Blue, Orange, Green
 
-    bar_width = 0.5  
     fig, ax = plt.subplots(figsize=(18, 8))
-
-    agency_gender_count.plot(kind='bar', ax = ax, width = bar_width)
-
-    plt.title("Gender distribution per agency")
-    plt.xlabel("Agency")
-    plt.xticks(rotation = 45, ha= 'right')
-    plt.margins(x = 0.1)
-    plt.subplots_adjust(left=0.1, right=0.9, top=0.9, bottom=0.3)
-    plt.ylabel("Count")
-    plt.legend(title = "Gender")
-
-
-    plt.savefig("images/gender_distribution_per_agency.png")
-
+    agency_gender_count.plot(kind='bar', ax=ax, width=0.5, color=colors, edgecolor="black", linewidth=0.5)
+    plt.title("Gender Distribution per Agency", fontsize=16, fontweight='bold')
+    plt.xlabel("Agency", fontsize=14)
+    plt.ylabel("Count", fontsize=14)
+    x_positions = np.arange(len(agency_gender_count.index))
+    ax.set_xticks(x_positions)
+    ax.set_xticklabels(agency_gender_count.index, rotation=90, ha='center', fontsize=12)
+    plt.grid(axis="y", linestyle="--", alpha=0.7)
+    plt.gca().set_axisbelow(True)
+    plt.subplots_adjust(left=0.1, right=0.95, top=0.9, bottom=0.5)
+    plt.legend(title="Gender", fontsize=12, title_fontsize=14)
+    plt.savefig("images/gender_distribution_per_agency.png", dpi=300)
 
 def import_skintone_data():
     skintones_first75 = pd.read_csv('data/skintones_first75.csv')
@@ -204,17 +183,17 @@ def plot_skintone_distribution():
     skintones_df['B'] = skintones_df['B'].astype(int)
 
     # Create a bar plot of the skintone distribution
-    plt.figure(figsize=(10, 8))
     skintone_counts = skintones_df['skin_tone'].value_counts().sort_index()
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
                           6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
-    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] for i in skintone_counts.index])
+    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] \
+                                                                                       for i in skintone_counts.index])
     plt.title('Skintone Distribution')
     plt.xlabel('Skin Tone on Monk Skin Tone Scale')
     plt.ylabel('Count')
     plt.xticks(list(range(1, 11)), rotation=90)
     plt.savefig('images/skintone_distribution_barchart.png')
-    plt.show()
+    
 
 def plot_skintone_vs_achievements():
     skintones_df = load_data('data/skintones.csv')
@@ -223,36 +202,40 @@ def plot_skintone_vs_achievements():
     combined_data.rename(columns={'skin_tone_x': 'skin_tone', 'skin_tone_y': 'skin_tone_moty'}, inplace=True)
     combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
     # plot mean number of achievements per skintone
-    plt.figure(figsize=(10, 8))
     combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
     mean_achievements = combined_data.groupby('skin_tone')['num_achievements'].mean()
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
                           6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
-    plt.bar(x=list(mean_achievements.index), height=list(mean_achievements.values), color=[skin_tone_colormap[i] for i in mean_achievements.index])
-    plt.title('Median Number of Achievements per Skintone')
+    plt.bar(x=list(mean_achievements.index), height=list(mean_achievements.values), color=[skin_tone_colormap[i] \
+                                                                                           for i in mean_achievements.index])
+    plt.title('Mean Number of Achievements per Skintone')
     plt.xlabel('Skin Tone on Monk Skin Tone Scale')
     plt.ylabel('Mean Number of Achievements')
     plt.xticks(list(range(1, 11)), rotation=90)
     plt.savefig('images/skintone_vs_achievements.png')
-    plt.show()
+    
 
     
 def moty_winners_by_skintone(moty_df_model_of_the_year, skintones_df):
-    plt.figure(figsize=(10, 8))
-    combined_data = pd.merge(moty_df_model_of_the_year, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
+    combined_data = pd\
+        .merge(moty_df_model_of_the_year, skintones_df, on='name', how='inner')\
+            .rename(columns={
+                'skin_tone_y': 'skin_tone', 
+                'skin_tone_x': 'skin_tone_moty'
+                })
     combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
     combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
     skintone_counts = combined_data['skin_tone'].value_counts().sort_index()
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
                           6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
     # keep only award == 'MOTY'
-    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] for i in skintone_counts.index])
+    plt.bar(x=list(skintone_counts.index), height=list(skintone_counts.values), color=[skin_tone_colormap[i] \
+                                                                                       for i in skintone_counts.index])
     plt.title('MOTY Winners by Skintone')
     plt.xlabel('Skin Tone on Monk Skin Tone Scale')
     plt.ylabel('Count')
     plt.xticks(list(range(1, 11)), rotation=90)
     plt.savefig('images/moty_winners_by_skintone.png')
-    plt.show()
 
 def skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female):
     Agency = pd.read_csv('data/Agency.csv')
@@ -268,15 +251,13 @@ def skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female):
     combined_data = combined_data.drop(columns=['R', 'G', 'B'])
     combined_data['skin_tone'] = combined_data['skin_tone'].astype(int)
     grouped_data = combined_data.groupby('gender')['skin_tone'].value_counts().unstack().fillna(0)
-    # convert counts to percentage
-    # grouped_data = grouped_data.div(grouped_data.sum(axis=1), axis=0) * 100
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
                           6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
     if "TM" in grouped_data.index:
         fig, ax = plt.subplots(1, 5, figsize=(25, 5), sharey=True)
     else:
         fig, ax = plt.subplots(1, 4, figsize=(20, 5), sharey=True)
-    # each plot is a gender category, with the number of models in each skintone category
+
     ax[0].bar(x=grouped_data.columns, height=grouped_data.iloc[0], color=[skin_tone_colormap[i] for i in grouped_data.columns])
     ax[0].set_title('Cisgender Female Models')
     ax[0].set_xlabel('Skin Tone on Monk Skin Tone Scale')
@@ -313,19 +294,15 @@ def skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female):
         ax[4].set_xticklabels(list(range(1, 11)))
         ax[4].set_yticks(list(range(0, 21, 2)))
         ax[4].set_yticklabels(list(range(0, 21, 2)))
-    # plt.subplots_adjust(wspace=0.5)
     plt.suptitle('Skintone Distribution By Gender for All USA Models')
-    plt.savefig('images/skintone_vs_gender.png')
-    plt.show()
+    plt.savefig('images/skintone_vs_gender.png') 
 
 def skintone_vs_moty_bs(skintones_df, moty_df):
-    plt.figure(figsize=(10, 8))
     combined_data = pd.merge(moty_df, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
     combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
     skintone_counts_moty = combined_data.loc[combined_data['award'] == 'MOTY'].loc[:, 'skin_tone'].value_counts().sort_index()
     skintone_counts_bs = combined_data.loc[combined_data['award'] == 'BS'].loc[:, 'skin_tone'].value_counts().sort_index()
-    # fill missing values with 0
     skintone_counts_moty = skintone_counts_moty.reindex(list(range(1, 11)), fill_value=0)
     skintone_counts_bs = skintone_counts_bs.reindex(list(range(1, 11)), fill_value=0)
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
@@ -349,18 +326,13 @@ def skintone_vs_moty_bs(skintones_df, moty_df):
     ax[1].set_yticklabels(list(range(0, 21, 2)))
     plt.suptitle('MOTY and Breakout Star Winners by Skintone')
     plt.savefig('images/moty_bs_winners_by_skintone.png')
-    plt.show()
     
 def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m):
-    plt.figure(figsize=(10, 8))
     combined_data = pd.merge(moty_df, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
     combined_data_f = pd.merge(top_50_f, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_f'})
     combined_data_m = pd.merge(top_50_m, skintones_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_top_50_m'})
     combined_data = pd.concat([combined_data, combined_data_f, combined_data_m], axis=0)
     combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty', 'skin_tone_top_50_f', 'skin_tone_top_50_m'])
-    combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
-    # plot histograms of number of runway shows by skintone
-    fig, axs = plt.subplots(3, 3, figsize=(20, 20), sharey=True, sharex=True)
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
     # plot histograms of number of runway shows by skintone
     fig, axs = plt.subplots(3, 3, figsize=(20, 20), sharey=True, sharex=True)
@@ -386,26 +358,36 @@ def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m):
     axs[2, 2].set_title('Monk 09')
     plt.suptitle('Number of Runway Shows by Skintone')
     plt.savefig('images/runway_shows_by_skintone.png')
-    plt.show()
 
 def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
-    '''KEEP IN FINAL'''
-    #mean skintone of moty/bs over the years
+    # Mean skintone of moty/bs over the years
     moty_df['year'] = pd.to_datetime(moty_df['year'], format='%Y')
-    combined_data = pd.merge(moty_df, skintone_df, on='name', how='inner').rename(columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'})
+    combined_data = pd.merge(moty_df, skintone_df, on='name', how='inner').rename(
+        columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'}
+    )
     combined_data = combined_data.drop(columns=['R', 'G', 'B', 'skin_tone_moty'])
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
-    # plot mean skintone by year
     mean_skintone_by_year = combined_data.groupby('year')['skin_tone'].mean()
-    plt.figure(figsize=(10, 8))
-    plt.plot(mean_skintone_by_year.index, mean_skintone_by_year.values)
-    plt.title('Mean Skintone of Model of the Year and Breakout Star Winners in the last 10 years')
-    plt.xlabel('Year')
-    plt.ylabel('Mean Skintone on Monk Skin Tone Scale')
+    years = mean_skintone_by_year.index
+    skintones = mean_skintone_by_year.values
+    skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96', 
+                          6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
+    tone_colors = np.array(list(skin_tone_colormap.values()))
+    cmap = ListedColormap(tone_colors)
+    points = np.array([years, skintones]).T.reshape(-1, 1, 2)
+    segments = np.concatenate([points[:-1], points[1:]], axis=1)
+    lc = LineCollection(segments, cmap=cmap, norm=plt.Normalize(vmin=1, vmax=10), linewidths=4)
+    lc.set_array(skintones)
+
+    fig, ax = plt.subplots(figsize=(10, 8))
+    ax.add_collection(lc)
+    ax.autoscale()
+    ax.set_title('Mean Skintone of Model of the Year and Breakout Star Winners in the last 10 years')
+    ax.set_xlabel('Year')
+    ax.set_ylabel('Mean Skintone on Monk Skin Tone Scale')
+    plt.colorbar(lc, ax=ax, label="Mean Skintone")  # Add color legend
     plt.savefig('images/mean_skintone_of_moty_bs_over_time.png')
     plt.show()
-
-# number of campaigns and number of magazine covers as skintone increases on monk scale - (top 50, moty datasets)
 
 def campaigns_vs_skintone(top_50_female, top_50_male, skintones_df):
     # combine top 50
@@ -440,17 +422,6 @@ def campaigns_vs_skintone(top_50_female, top_50_male, skintones_df):
     ax[1].set_ylabel('Number of Campaigns in Last Three Years')
     plt.suptitle('Number of Campaigns vs Skintone for Top 50 Models')
     plt.savefig('images/campaigns_vs_skintone.png')
-    plt.show()
-
-
-    # plt.figure(figsize=(10, 8))
-    # skin_tone_colormap = {'1': '#f6ede4', '2': '#f3e7db', '3': '#f7ead0', '4': '#eadaba', '5': '#d7bd96', 
-    #                       '6': '#a07e56', '7': '#825c43', '8': '#604134', '9': '#3a312a', '10': '#292420'}
-    # sns.boxplot(data=combined_data, x='skin_tone', y='number_of_campaigns_in_last_three_years', palette=skin_tone_colormap, saturation=1)
-    # plt.title('Number of Campaigns vs Skintone on Monk Skin Tone Scale for Top 50 Models')
-    # plt.xlabel('Skin Tone on Monk Skin Tone Scale')
-    # plt.ylabel('Number of Campaigns in Last Three Years')
-    
 
 def covers_vs_skintone(top_50_female, top_50_male, skintones_df):
     # combine top 50
@@ -463,7 +434,6 @@ def covers_vs_skintone(top_50_female, top_50_male, skintones_df):
     combined_data = pd.merge(skintones_df, top_50, on='name', how='inner').rename(columns={'skin_tone_x': 'skin_tone', 'skin_tone_y': 'skin_tone_top_50'})
     combined_data = combined_data.drop(columns=['R', 'G', 'B'])
     combined_data.loc[:, 'skin_tone'] = combined_data.loc[:, 'skin_tone'].astype(int)
-    # boxplot of number of campaigns vs skintone and gender
     fig, ax = plt.subplots(1, 2, figsize=(20, 10), sharey=True)
     skin_tone_colormap = {1: '#f6ede4', 2: '#f3e7db', 3: '#f7ead0', 4: '#eadaba', 5: '#d7bd96',
                           6: '#a07e56', 7: '#825c43', 8: '#604134', 9: '#3a312a', 10: '#292420'}
@@ -485,7 +455,7 @@ def covers_vs_skintone(top_50_female, top_50_male, skintones_df):
     ax[1].set_ylabel('Number of Magazine Covers in Last Three Years')
     plt.suptitle('Number of Magazine Covers vs Skintone for Top 50 Models')
     plt.savefig('images/covers_vs_skintone.png')
-    plt.show()
+
 
 
 def main(): 
@@ -507,11 +477,6 @@ def main():
     moty_df['choice'] = moty_df['choice'].str.strip()
     moty_df['gender'] = moty_df['gender'].str.strip()   
 
-    #remove duplicate names 
-    #moty_df = moty_df.drop_duplicates(subset=['name'], keep='first')
-
-    #preprocess
-
     #Model of the Year
     moty_df_model_of_the_year = moty_df[moty_df['award'] == 'MOTY']
 
@@ -524,19 +489,6 @@ def main():
     mean_skintone_of_moty_bs_over_time(skintones_df, moty_df)
     campaigns_vs_skintone(top_50_female, top_50_male, skintones_df)
     covers_vs_skintone(top_50_female, top_50_male, skintones_df)
-    
-    # print("Distribution of type of awards based on hair and eye color")
-
-    # unique list of models
-    # print("Unique list of models")
-    # combined_data = pd.concat([moty_df, top_50_male, top_50_female], axis=0)
-    # unique_models = combined_data['name'].drop_duplicates().reset_index(drop = True)
-    # #write to file
-    # unique_models.to_csv('data/unique_models.csv', index = False)
-    
-    # print(moty_df['hair_color'].value_counts())
-    # print(moty_df['eye_color'].value_counts())
-    # print(moty_df['choice'].value_counts())
 
     # #award = MOTY
     eda_moty_hair_eye_color_choice_distribution(moty_df_model_of_the_year, 'MOTY')
@@ -546,28 +498,21 @@ def main():
     eda_moty_hair_eye_color_choice_distribution(moty_bs_df, 'BS')
     eda_moty_hair_eye_color_num_achievements_distribution(moty_bs_df, 'BS')
 
-
-
     #hair eye color number of runway shows
     eda_moty_hair_eye_color_num_runway_shows_distribution(moty_df_model_of_the_year, 'MOTY')
     eda_moty_hair_eye_color_num_runway_shows_distribution(moty_bs_df, 'BS')
 
-
-    #number  of runway shows per gender
+    #number of runway shows per gender
     eda_num_runway_shows_per_gender(moty_df_model_of_the_year, 'MOTY')
     eda_num_runway_shows_per_gender(moty_bs_df, 'BS')
 
     #plotting over the years gender distribution 
     eda_gender_distribution_over_years(moty_df)
 
-
     #gender distribution per US agency
     gender_distribution_per_us_agency(agency_df)
 
 
-    #TODO: top 50 - female
-
-    #TODO: top 50 - male'''
 
 main()
 
