@@ -143,19 +143,29 @@ def gender_distribution_per_us_agency(agency_df):
     agency_gender_count = agency_gender_count.sort_values(by="total", ascending=False).drop(columns="total")
     
     agency_gender_count.set_index("agency_name", inplace=True)
+    midpoint = len(agency_gender_count) // 2
+    agency_gender_count_1 = agency_gender_count.iloc[:midpoint]
+    agency_gender_count_2 = agency_gender_count.iloc[midpoint:]
     colors = ["#ff73c5", "#73d5ff", "#78ff73"]  # Blue, Orange, Green
 
-    fig, ax = plt.subplots(figsize=(18, 8))
-    agency_gender_count.plot(kind='bar', ax=ax, width=0.5, color=colors, edgecolor="black", linewidth=0.5)
-    plt.title("Gender Distribution per Agency", fontsize=16, fontweight='bold')
-    plt.xlabel("Agency", fontsize=14)
-    plt.ylabel("Count", fontsize=14)
-    x_positions = np.arange(len(agency_gender_count.index))
-    ax.set_xticks(x_positions)
-    ax.set_xticklabels(agency_gender_count.index, rotation=90, ha='center', fontsize=12)
+    fig, ax = plt.subplots(2, 1, figsize=(9, 16), sharey=True)
+    agency_gender_count_1.plot(kind='bar', ax=ax[0], width=0.5, color=colors, edgecolor="black", linewidth=0.5)
+    agency_gender_count_2.plot(kind='bar', ax=ax[1], width=0.5, color=colors, edgecolor="black", linewidth=0.5)
+    ax[0].set_title("Gender Distribution per Agency", fontsize=16, fontweight='bold')
+    ax[0].set_xlabel("Agency", fontsize=14)
+    ax[0].set_ylabel("Count", fontsize=14)
+    ax[1].set_xlabel("Agency", fontsize=14)
+    ax[1].set_ylabel("Count", fontsize=14)
+    x_positions_1 = np.arange(len(agency_gender_count_1.index))
+    x_positions_2 = np.arange(len(agency_gender_count_2.index))
+    ax[0].set_xticks(x_positions_1)
+    ax[1].set_xticks(x_positions_2)
+    ax[0].set_xticklabels(agency_gender_count_1.index, rotation=90, ha='center', fontsize=12)
+    ax[1].set_xticklabels(agency_gender_count_2.index, rotation=90, ha='center', fontsize=12)
     plt.grid(axis="y", linestyle="--", alpha=0.7)
     plt.gca().set_axisbelow(True)
-    plt.subplots_adjust(left=0.1, right=0.95, top=0.9, bottom=0.5)
+    #plt.subplots_adjust(left=0.1, right=0.95, top=0.9, bottom=0.5)
+    plt.tight_layout(h_pad=4)
     plt.legend(title="Gender", fontsize=12, title_fontsize=14)
     plt.savefig("images/gender_distribution_per_agency.png", dpi=300)
 
@@ -361,7 +371,8 @@ def skintone_vs_runway(skintones_df, moty_df, top_50_f, top_50_m):
 
 def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
     # Mean skintone of moty/bs over the years
-    moty_df['year'] = pd.to_datetime(moty_df['year'], format='%Y')
+    moty_df['year'] = pd.to_datetime(moty_df['year'], format='%Y').dt.year
+    print(moty_df['year'])
     combined_data = pd.merge(moty_df, skintone_df, on='name', how='inner').rename(
         columns={'skin_tone_y': 'skin_tone', 'skin_tone_x': 'skin_tone_moty'}
     )
@@ -378,7 +389,6 @@ def mean_skintone_of_moty_bs_over_time(skintone_df, moty_df):
     segments = np.concatenate([points[:-1], points[1:]], axis=1)
     lc = LineCollection(segments, cmap=cmap, norm=plt.Normalize(vmin=1, vmax=10), linewidths=4)
     lc.set_array(skintones)
-
     fig, ax = plt.subplots(figsize=(10, 8))
     ax.add_collection(lc)
     ax.autoscale()
@@ -469,48 +479,48 @@ def main():
     top_50_female = load_data('data/Top_50_F.csv')
     top_50_male = load_data('data/Top_50_M.csv')
 
-    #remove white space
-    moty_df['name'] = moty_df['name'].str.strip()
-    moty_df['award'] = moty_df['award'].str.strip()
-    moty_df['hair_color'] = moty_df['hair_color'].str.lower().str.strip()
-    moty_df['eye_color'] = moty_df['eye_color'].str.lower().str.strip()
-    moty_df['choice'] = moty_df['choice'].str.strip()
-    moty_df['gender'] = moty_df['gender'].str.strip()   
+    # #remove white space
+    # moty_df['name'] = moty_df['name'].str.strip()
+    # moty_df['award'] = moty_df['award'].str.strip()
+    # moty_df['hair_color'] = moty_df['hair_color'].str.lower().str.strip()
+    # moty_df['eye_color'] = moty_df['eye_color'].str.lower().str.strip()
+    # moty_df['choice'] = moty_df['choice'].str.strip()
+    # moty_df['gender'] = moty_df['gender'].str.strip()   
 
-    #Model of the Year
-    moty_df_model_of_the_year = moty_df[moty_df['award'] == 'MOTY']
+    # #Model of the Year
+    # moty_df_model_of_the_year = moty_df[moty_df['award'] == 'MOTY']
 
-    #break out star
-    moty_bs_df = moty_df[moty_df['award'] == 'BS']
+    # #break out star
+    # moty_bs_df = moty_df[moty_df['award'] == 'BS']
     
     skintone_vs_gender(skintones_df, moty_df, top_50_male, top_50_female)
-    skintone_vs_moty_bs(skintones_df, moty_df)
-    skintone_vs_runway(skintones_df, moty_df, top_50_female, top_50_male)
+    # skintone_vs_moty_bs(skintones_df, moty_df)
+    # skintone_vs_runway(skintones_df, moty_df, top_50_female, top_50_male)
     mean_skintone_of_moty_bs_over_time(skintones_df, moty_df)
-    campaigns_vs_skintone(top_50_female, top_50_male, skintones_df)
-    covers_vs_skintone(top_50_female, top_50_male, skintones_df)
+    # campaigns_vs_skintone(top_50_female, top_50_male, skintones_df)
+    # covers_vs_skintone(top_50_female, top_50_male, skintones_df)
 
-    # #award = MOTY
-    eda_moty_hair_eye_color_choice_distribution(moty_df_model_of_the_year, 'MOTY')
-    eda_moty_hair_eye_color_num_achievements_distribution(moty_df_model_of_the_year, 'MOTY')
+    # # #award = MOTY
+    # eda_moty_hair_eye_color_choice_distribution(moty_df_model_of_the_year, 'MOTY')
+    # eda_moty_hair_eye_color_num_achievements_distribution(moty_df_model_of_the_year, 'MOTY')
 
-    # #award = Breakout Star
-    eda_moty_hair_eye_color_choice_distribution(moty_bs_df, 'BS')
-    eda_moty_hair_eye_color_num_achievements_distribution(moty_bs_df, 'BS')
+    # # #award = Breakout Star
+    # eda_moty_hair_eye_color_choice_distribution(moty_bs_df, 'BS')
+    # eda_moty_hair_eye_color_num_achievements_distribution(moty_bs_df, 'BS')
 
-    #hair eye color number of runway shows
-    eda_moty_hair_eye_color_num_runway_shows_distribution(moty_df_model_of_the_year, 'MOTY')
-    eda_moty_hair_eye_color_num_runway_shows_distribution(moty_bs_df, 'BS')
+    # #hair eye color number of runway shows
+    # eda_moty_hair_eye_color_num_runway_shows_distribution(moty_df_model_of_the_year, 'MOTY')
+    # eda_moty_hair_eye_color_num_runway_shows_distribution(moty_bs_df, 'BS')
 
-    #number of runway shows per gender
-    eda_num_runway_shows_per_gender(moty_df_model_of_the_year, 'MOTY')
-    eda_num_runway_shows_per_gender(moty_bs_df, 'BS')
+    # #number of runway shows per gender
+    # eda_num_runway_shows_per_gender(moty_df_model_of_the_year, 'MOTY')
+    # eda_num_runway_shows_per_gender(moty_bs_df, 'BS')
 
-    #plotting over the years gender distribution 
-    eda_gender_distribution_over_years(moty_df)
+    # #plotting over the years gender distribution 
+    # eda_gender_distribution_over_years(moty_df)
 
     #gender distribution per US agency
-    gender_distribution_per_us_agency(agency_df)
+    # gender_distribution_per_us_agency(agency_df)
 
 
 
