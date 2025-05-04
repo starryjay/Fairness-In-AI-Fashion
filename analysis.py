@@ -60,8 +60,8 @@ def analysis_runway_shows(combined_data):
     plt.title("Residuals Distribution Runway Shows")
     plt.xlabel("Residuals")
     plt.ylabel("Frequency")
-    plt.show()
     plt.savefig('residuals_runway_shows.png')
+    plt.show()
 
 def analysis_magazine_covers(combined_data):
      '''Ho: We hypothesize that gender and skin tone has no impact on the number of magazine covers'''
@@ -79,8 +79,8 @@ def analysis_magazine_covers(combined_data):
      plt.title("Residuals Distribution Covers")
      plt.xlabel("Residuals")
      plt.ylabel("Frequency")
-     plt.show()
      plt.savefig('residuals_magazine_covers.png')
+     plt.show()
 
 def anallysis_awards(combined_data):
     '''Ho: We hypothesize that gender and skin tone has no impact on the number of awards'''
