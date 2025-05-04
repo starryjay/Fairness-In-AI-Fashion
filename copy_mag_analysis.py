@@ -25,11 +25,13 @@ def num_ethnicity(df: pd.DataFrame) -> None:
         df: DataFrame containing the data.
     """
     plt.figure(figsize=(8, 6), dpi=300)
-    plt.bar(df['observed_ethnicity'].value_counts().index, df['observed_ethnicity'].value_counts().values, color=['#96dce6', '#70bdc8', '#3a8e9a', '#24717c'], width=0.4)
+    plt.bar(df['observed_ethnicity'].value_counts().index, df['observed_ethnicity'].value_counts().values, color=['#96dce6', '#70bdc8', '#3a8e9a', '#24717c'], width=0.4, zorder=3)
     plt.title('Observed Ethnicity Frequency')
-    plt.xlabel('Ethnicity Category')
-    plt.ylabel('Frequency')
-    plt.xticks(rotation=45)
+    plt.xlabel('Ethnicity Category', fontsize=14)
+    plt.ylabel('Frequency', fontsize=14)
+    plt.xticks(rotation=45, fontsize=14)
+    plt.yticks(fontsize=14)
+    plt.grid(axis='y', linestyle='--', alpha=0.7, zorder=0)
     plt.tight_layout()
     plt.savefig('images/eth_freq.png')
     plt.show()
