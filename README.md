@@ -5,7 +5,7 @@
 ---
 ### Background
 The goal of this analysis is to evaluate fairness and bias in the fashion industry. 
-This repository contains code and plots for the Exploratory Data Analysis (EDA) portion of our investigation. Data was sourced from the [Fashion Model Directory](https://www.fashionmodeldirectory.com/), [Models.com](https://models.com/), and [Copy Magazine's Instagram profile](https://www.instagram.com/magazinecopy/).
+This repository contains code and plots for the Exploratory Data Analysis (EDA) portion of our investigation.
 
 ### How to Run
 1. Create a venv and clone repository.
